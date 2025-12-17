@@ -1,5 +1,5 @@
 /**
- * Copyright (c)2022 SpringCard - www.springcard.com.com
+ * Copyright (c) 2018-2019 SpringCard - www.springcard.com
  * All right reserved
  * This software is covered by the SpringCard SDK License Agreement - see LICENSE.txt
  */
@@ -40,13 +40,15 @@ fun Collection<Byte>.toHexString(): String {
     return this.toByteArray().toHexString()
 }
 
+@OptIn(ExperimentalStdlibApi::class)
 fun Byte.toHexString(): String {
-    return "0x${this.toString(16).toUpperCase().padStart(2, '0')}"
+    return "0x${this.toString(16).uppercase().padStart(2, '0')}"
 }
 
-//fun UByte.toHexString(): String {
-//    return "0x${this.toString(16).toUpperCase().padStart(2, '0')}"
-//}
+@OptIn(ExperimentalStdlibApi::class, ExperimentalUnsignedTypes::class)
+fun UByte.toHexString(): String {
+    return "0x${this.toString(16).uppercase().padStart(2, '0')}"
+}
 
 /*
 fun MutableCollection<Byte>.toHexString(): String {
