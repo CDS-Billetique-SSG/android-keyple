@@ -5,7 +5,6 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    kotlin("android.extensions")
     id("com.diffplug.spotless")
 }
 
@@ -15,8 +14,9 @@ plugins {
 val kotlinVersion: String by project
 val archivesBaseName: String by project
 android {
-    compileSdkVersion(31)
-    buildToolsVersion("30.0.3")
+    namespace = "com.springcard.keyple.plugin.android.pcsclike.example"
+    compileSdk = 31
+    buildToolsVersion = "30.0.3"
 
     signingConfigs {
         create("default") {
@@ -31,28 +31,28 @@ android {
     }
 
     defaultConfig {
-        applicationId("com.springcard.keyple.plugin.android.pcsclike.example")
-        minSdkVersion(26)
-        targetSdkVersion(31)
-        versionName(project.version.toString())
-        versionCode(3)
-        testInstrumentationRunner("android.support.test.runner.AndroidJUnitRunner")
+        applicationId = "com.springcard.keyple.plugin.android.pcsclike.example"
+        minSdk = 26
+        targetSdk = 31
+        versionName = project.version.toString()
+        versionCode = 3
+        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
     }
 
     buildTypes {
-        getByName("debug") {
-            minifyEnabled(false)
-            isTestCoverageEnabled = true
+        debug {
+            isMinifyEnabled = false
+            enableUnitTestCoverage = true
             isDebuggable = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
-        getByName("release") {
-            minifyEnabled(true)
-            isTestCoverageEnabled = false
+        release {
+            isMinifyEnabled = true
+            enableUnitTestCoverage = false
             isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -69,21 +69,14 @@ android {
         targetCompatibility = JavaVersion.toVersion(javaTargetLevel)
     }
 
-    packagingOptions {
-        exclude("META-INF/NOTICE.md")
+    packaging {
+        resources.excludes.add("META-INF/NOTICE.md")
     }
 
-    lintOptions {
-        isAbortOnError = false
-    }
+    lint.abortOnError = false
 
     kotlinOptions {
         jvmTarget = javaTargetLevel
-    }
-
-    sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
-        getByName("test").java.srcDirs("src/test/kotlin")
     }
 }
 

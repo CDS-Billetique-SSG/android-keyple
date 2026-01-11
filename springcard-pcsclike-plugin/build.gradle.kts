@@ -4,7 +4,6 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    kotlin("android.extensions")
     id("org.jetbrains.dokka")
     jacoco
     id("com.diffplug.spotless")
@@ -22,25 +21,27 @@ buildscript {
 val kotlinVersion: String by project
 val archivesBaseName: String by project
 android {
-    compileSdkVersion(31)
-    buildToolsVersion("30.0.2")
+    namespace = "com.springcard.keyple.plugin"
+    compileSdk = 31
+    buildToolsVersion = "30.0.2"
 
     buildFeatures {
         viewBinding = true
     }
     defaultConfig {
-        minSdkVersion(26)
-        targetSdkVersion(31)
-        versionName(project.version.toString())
+        minSdk = 26
+        lint.targetSdk = 31
+//        versionName = project.version.toString()
 
-        testInstrumentationRunner("android.support.test.runner.AndroidJUnitRunner")
+        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-        getByName("release") {
-            minifyEnabled(false)
-            isTestCoverageEnabled = true
+        debug{}
+        release {
+            isMinifyEnabled = false
+            enableUnitTestCoverage = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -62,9 +63,7 @@ android {
         }
     }
 
-    lintOptions {
-        isAbortOnError = false
-    }
+    lint.abortOnError = false
 
     // generate output aar with a qualified name : with version number
     libraryVariants.all {
@@ -78,13 +77,6 @@ android {
 
     kotlinOptions {
         jvmTarget = javaTargetLevel
-    }
-
-    sourceSets {
-        getByName("main").java.srcDirs("src/main/kotlin")
-        getByName("debug").java.srcDirs("src/debug/kotlin")
-        getByName("test").java.srcDirs("src/test/kotlin")
-        getByName("androidTest").java.srcDirs("src/androidTest/kotlin")
     }
 }
 
@@ -146,5 +138,5 @@ tasks {
         }
     }
 }
-apply(plugin = "org.eclipse.keyple") // To do last
+//apply(plugin = "org.eclipse.keyple") // To do last
 
