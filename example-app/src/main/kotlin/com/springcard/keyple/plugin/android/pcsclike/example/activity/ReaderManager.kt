@@ -130,10 +130,10 @@ internal class ReaderManager(private val activity: MainActivity) :
         // Here the card reader contains 'contactless' in its name and the SAM reader contains
         // 'SAM'.
         for (readerName in pluginEvent.readerNames) {
-          if (readerName.toUpperCase().contains("CONTACTLESS")) {
+          if (readerName.uppercase().contains("CONTACTLESS")) {
             cardReaderAvailable = true
             onCardReaderConnected(readerName)
-          } else if (readerName.toUpperCase().contains("SAM")) {
+          } else if (readerName.uppercase().contains("SAM")) {
             samReaderAvailable = true
             onSamReaderConnected(readerName)
           }

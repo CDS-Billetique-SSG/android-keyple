@@ -57,7 +57,6 @@ internal class UsbLowLevel(private val scardReaderList: SCardReaderList, private
     /* Utilities func */
 
     @OptIn(ExperimentalUnsignedTypes::class)
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun connect(ctx: Context) {
 
         context = ctx
@@ -316,10 +315,11 @@ internal class UsbLowLevel(private val scardReaderList: SCardReaderList, private
     }
 
     private var mUsbReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         override fun onReceive(context: Context, intent: Intent) {
 
             if (UsbManager.ACTION_USB_DEVICE_DETACHED == intent.action) {
-                val device: UsbDevice? = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE)
+                val device: UsbDevice? = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE,UsbDevice::class.java)
                 device?.apply {
 
                     if(device == usbDevice) {

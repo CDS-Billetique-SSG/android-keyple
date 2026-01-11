@@ -17,6 +17,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.springcard.keyple.plugin.R
 import com.springcard.keyple.plugin.android.pcsclike.spi.DeviceScannerSpi
 import com.springcard.pcsclike.SCardReaderList
@@ -105,9 +106,10 @@ internal class AndroidUsbPcsclikePluginAdapter(name: String) :
     isUsbAttachReceiverEnabled = true
     usbAttachReceiver =
         object : BroadcastReceiver() {
+          @RequiresApi(Build.VERSION_CODES.TIRAMISU)
           override fun onReceive(context: Context, intent: Intent) {
             Timber.d("USB attach receiver received: $intent")
-            val usbDevice: UsbDevice? = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE)
+            val usbDevice: UsbDevice? = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE,UsbDevice::class.java)
             when {
               UsbManager.ACTION_USB_DEVICE_ATTACHED == intent.action -> {
                 if (isUsbAttachReceiverEnabled &&
@@ -218,7 +220,7 @@ internal class AndroidUsbPcsclikePluginAdapter(name: String) :
    * @return A 4-byte hex string.
    */
   private fun intTo4hex(value: Int): String {
-    return value.toString(16).toUpperCase().padStart(2, '0')
+    return value.toString(16).uppercase().padStart(2, '0')
   }
 
   /** Device discovery notifier */
