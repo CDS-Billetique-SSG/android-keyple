@@ -139,9 +139,19 @@ internal class AndroidUsbPcsclikePluginAdapter(name: String) :
             }
           }
         }
-    context.registerReceiver(usbAttachReceiver, IntentFilter(UsbManager.ACTION_USB_DEVICE_ATTACHED))
-    context.registerReceiver(usbAttachReceiver, IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED))
-    context.registerReceiver(usbAttachReceiver, IntentFilter(ACTION_USB_PERMISSION))
+    context.registerReceiver(
+      usbAttachReceiver,
+      IntentFilter(UsbManager.ACTION_USB_DEVICE_ATTACHED),
+      Context.RECEIVER_EXPORTED
+    )
+    context.registerReceiver(usbAttachReceiver,
+      IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED),
+      Context.RECEIVER_EXPORTED
+    )
+    context.registerReceiver(usbAttachReceiver,
+      IntentFilter(ACTION_USB_PERMISSION),
+      Context.RECEIVER_EXPORTED
+    )
   }
 
   /**

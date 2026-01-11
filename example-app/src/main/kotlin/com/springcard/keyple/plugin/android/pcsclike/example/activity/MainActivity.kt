@@ -22,21 +22,22 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.springcard.keyple.plugin.android.pcsclike.AndroidPcsclikePluginFactory
-import com.springcard.keyple.plugin.android.pcsclike.example.R
 import com.springcard.keyple.plugin.android.pcsclike.example.adapter.EventAdapter
+import com.springcard.keyple.plugin.android.pcsclike.example.databinding.ActivityMainBinding
 import com.springcard.keyple.plugin.android.pcsclike.example.dialog.PermissionDeniedDialog
 import com.springcard.keyple.plugin.android.pcsclike.example.model.EventModel
 import com.springcard.keyple.plugin.android.pcsclike.example.util.PermissionHelper
-import java.util.concurrent.atomic.AtomicBoolean
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.concurrent.atomic.AtomicBoolean
 
 /** Activity launched on app start up that display the only screen available on this example app. */
 class MainActivity : AppCompatActivity(), EventNotifierSpi {
   /** Variables for event window */
+
+  private lateinit var binding: ActivityMainBinding
   private lateinit var adapter: RecyclerView.Adapter<*>
   private lateinit var layoutManager: RecyclerView.LayoutManager
   private val events = arrayListOf<EventModel>()
@@ -48,16 +49,17 @@ class MainActivity : AppCompatActivity(), EventNotifierSpi {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-    setSupportActionBar(toolbar)
+    binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
+    setSupportActionBar(binding.toolbar)
     supportActionBar?.title = "Keyple Demo"
     supportActionBar?.subtitle = "SpringCard AndroidPcsc Plugin"
 
     /** Init recycler view */
     adapter = EventAdapter(events)
     layoutManager = LinearLayoutManager(this)
-    eventRecyclerView.layoutManager = layoutManager
-    eventRecyclerView.adapter = adapter
+    binding.eventRecyclerView.layoutManager = layoutManager
+    binding.eventRecyclerView.adapter = adapter
     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
   }
 
@@ -107,8 +109,8 @@ class MainActivity : AppCompatActivity(), EventNotifierSpi {
   }
 
   override fun onBackPressed() {
-    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-      drawerLayout.closeDrawer(GravityCompat.START)
+    if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+      binding.drawerLayout.closeDrawer(GravityCompat.START)
     } else {
       super.onBackPressed()
     }
@@ -158,7 +160,7 @@ class MainActivity : AppCompatActivity(), EventNotifierSpi {
     CoroutineScope(Dispatchers.Main).launch {
       adapter.notifyDataSetChanged()
       adapter.notifyItemInserted(events.lastIndex)
-      eventRecyclerView.smoothScrollToPosition(events.size - 1)
+      binding.eventRecyclerView.smoothScrollToPosition(events.size - 1)
     }
   }
 
@@ -199,7 +201,7 @@ class MainActivity : AppCompatActivity(), EventNotifierSpi {
         }
     isReaderDetectionPending = true
     packageManager.takeIf { !it.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE) }?.also {
-      Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show()
+      Toast.makeText(this, com.springcard.keyple.plugin.R.string.ble_not_supported, Toast.LENGTH_SHORT).show()
       finish()
     }
     if (PermissionHelper.checkPermission(this, permissions, BLE_PERMISSIONS_REQUEST)) {

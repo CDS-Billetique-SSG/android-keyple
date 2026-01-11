@@ -15,8 +15,8 @@ val kotlinVersion: String by project
 val archivesBaseName: String by project
 android {
     namespace = "com.springcard.keyple.plugin.android.pcsclike.example"
-    compileSdk = 31
-    buildToolsVersion = "30.0.3"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
 
     signingConfigs {
         create("default") {
@@ -33,7 +33,7 @@ android {
     defaultConfig {
         applicationId = "com.springcard.keyple.plugin.android.pcsclike.example"
         minSdk = 26
-        targetSdk = 31
+        targetSdk = 34
         versionName = project.version.toString()
         versionCode = 3
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -60,6 +60,10 @@ android {
             )
             // signingConfig = signingConfigs.getByName("default")
         }
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     val javaSourceLevel: String by project

@@ -9,27 +9,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.springcard.keyple.plugin.android.pcsclike.example.R
+import com.springcard.keyple.plugin.android.pcsclike.example.databinding.CardActionEventBinding
+import com.springcard.keyple.plugin.android.pcsclike.example.databinding.CardHeaderEventBinding
+import com.springcard.keyple.plugin.android.pcsclike.example.databinding.CardResultEventBinding
 import com.springcard.keyple.plugin.android.pcsclike.example.model.EventModel
-import kotlinx.android.synthetic.main.card_action_event.view.cardActionTextView
 
 class EventAdapter(private val events: ArrayList<EventModel>) :
     RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    val inflater = LayoutInflater.from(parent.context)
     return when (viewType) {
-      EventModel.TYPE_ACTION ->
-          ViewHolder(
-              LayoutInflater.from(parent.context)
-                  .inflate(R.layout.card_action_event, parent, false))
-      EventModel.TYPE_RESULT ->
-          ViewHolder(
-              LayoutInflater.from(parent.context)
-                  .inflate(R.layout.card_result_event, parent, false))
-      else ->
-          ViewHolder(
-              LayoutInflater.from(parent.context)
-                  .inflate(R.layout.card_header_event, parent, false))
+        EventModel.TYPE_ACTION ->
+            ActionViewHolder(
+                CardActionEventBinding.inflate(inflater, parent, false)
+            )
+
+        EventModel.TYPE_RESULT ->
+            ResultViewHolder(
+                CardResultEventBinding.inflate(inflater, parent, false)
+            )
+
+        else ->
+            HeaderViewHolder(
+                CardHeaderEventBinding.inflate(inflater, parent, false)
+            )
     }
   }
 
@@ -45,9 +49,35 @@ class EventAdapter(private val events: ArrayList<EventModel>) :
     return events[position].type
   }
 
-  open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    open fun bind(event: EventModel) {
-      with(itemView) { cardActionTextView.text = event.text }
+    open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        open fun bind(event: EventModel) {
+        }
     }
-  }
+    class ActionViewHolder(
+        private val binding: CardActionEventBinding
+    ) : ViewHolder(binding.root) {
+
+        override fun bind(event: EventModel) {
+            binding.cardActionTextView.text = event.text
+        }
+    }
+
+    class HeaderViewHolder(
+        private val binding: CardHeaderEventBinding
+    ) : ViewHolder(binding.root) {
+
+        override fun bind(event: EventModel) {
+            binding.cardActionTextView.text = event.text
+        }
+    }
+
+    class ResultViewHolder(
+        private val binding: CardResultEventBinding
+    ) : ViewHolder(binding.root) {
+
+        override fun bind(event: EventModel) {
+            binding.cardActionTextView.text = event.text
+        }
+    }
 }
+

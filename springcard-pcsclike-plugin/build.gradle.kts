@@ -22,8 +22,8 @@ val kotlinVersion: String by project
 val archivesBaseName: String by project
 android {
     namespace = "com.springcard.keyple.plugin"
-    compileSdk = 31
-    buildToolsVersion = "30.0.2"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
 
     buildFeatures {
         viewBinding = true
@@ -61,6 +61,10 @@ android {
             isReturnDefaultValues = true // mock Log Android object
             isIncludeAndroidResources = true
         }
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     lint.abortOnError = false

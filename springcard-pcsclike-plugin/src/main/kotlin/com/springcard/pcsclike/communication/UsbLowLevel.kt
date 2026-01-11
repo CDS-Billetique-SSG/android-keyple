@@ -63,7 +63,10 @@ internal class UsbLowLevel(private val scardReaderList: SCardReaderList, private
         context = ctx
 
         /* register to be notified when the device is unplugged */
-        context.registerReceiver(mUsbReceiver, IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED))
+        context.registerReceiver(mUsbReceiver,
+            IntentFilter(UsbManager.ACTION_USB_DEVICE_DETACHED),
+            Context.RECEIVER_EXPORTED
+        )
 
         /* Connect to device */
         val usbManager: UsbManager = ctx.getSystemService(Context.USB_SERVICE) as UsbManager
