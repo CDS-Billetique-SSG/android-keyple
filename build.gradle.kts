@@ -7,6 +7,7 @@ plugins {
     id("org.jetbrains.dokka") version "1.4.32"
 }
 buildscript {
+    val agpVersion by extra("8.2.2")
     val kotlinVersion: String by project
     repositories {
         mavenLocal()
@@ -16,7 +17,7 @@ buildscript {
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.android.tools.build:gradle:8.2.2")
+        classpath("com.android.tools.build:gradle:$agpVersion")
         classpath("org.eclipse.keyple:keyple-gradle:0.2.17")
     }
 }

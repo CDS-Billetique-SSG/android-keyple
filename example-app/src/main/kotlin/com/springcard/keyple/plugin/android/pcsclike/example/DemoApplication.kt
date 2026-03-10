@@ -7,6 +7,7 @@ package com.springcard.keyple.plugin.android.pcsclike.example
 
 import android.app.Application
 import androidx.multidex.MultiDex
+import at.favre.lib.slf4j_timber.BuildConfig
 import timber.log.Timber
 
 class DemoApplication : Application() {
