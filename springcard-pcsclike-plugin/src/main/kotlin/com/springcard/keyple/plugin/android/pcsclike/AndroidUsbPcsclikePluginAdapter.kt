@@ -106,10 +106,17 @@ internal class AndroidUsbPcsclikePluginAdapter(name: String) :
     isUsbAttachReceiverEnabled = true
     usbAttachReceiver =
         object : BroadcastReceiver() {
-          @RequiresApi(Build.VERSION_CODES.TIRAMISU)
           override fun onReceive(context: Context, intent: Intent) {
             Timber.d("USB attach receiver received: $intent")
-            val usbDevice: UsbDevice? = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE,UsbDevice::class.java)
+
+              val usbDevice: UsbDevice? = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+                  intent.getParcelableExtra(UsbManager.EXTRA_DEVICE, UsbDevice::class.java)
+              }
+              else {
+                  @Suppress("DEPRECATION")
+                  intent.getParcelableExtra(UsbManager.EXTRA_DEVICE)
+              }
+
             when {
               UsbManager.ACTION_USB_DEVICE_ATTACHED == intent.action -> {
                 if (isUsbAttachReceiverEnabled &&

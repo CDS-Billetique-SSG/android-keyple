@@ -315,11 +315,16 @@ internal class UsbLowLevel(private val scardReaderList: SCardReaderList, private
     }
 
     private var mUsbReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         override fun onReceive(context: Context, intent: Intent) {
 
             if (UsbManager.ACTION_USB_DEVICE_DETACHED == intent.action) {
-                val device: UsbDevice? = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE,UsbDevice::class.java)
+                val device: UsbDevice? = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+                    intent.getParcelableExtra(UsbManager.EXTRA_DEVICE, UsbDevice::class.java)
+                }
+                else {
+                    @Suppress("DEPRECATION")
+                    intent.getParcelableExtra(UsbManager.EXTRA_DEVICE)
+                }
                 device?.apply {
 
                     if(device == usbDevice) {
