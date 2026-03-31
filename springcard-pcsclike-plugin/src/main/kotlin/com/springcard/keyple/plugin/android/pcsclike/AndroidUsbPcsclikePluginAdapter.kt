@@ -109,7 +109,7 @@ internal class AndroidUsbPcsclikePluginAdapter(name: String) :
           override fun onReceive(context: Context, intent: Intent) {
             Timber.d("USB attach receiver received: $intent")
 
-              val usbDevice: UsbDevice? = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+              val usbDevice: UsbDevice? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                   intent.getParcelableExtra(UsbManager.EXTRA_DEVICE, UsbDevice::class.java)
               }
               else {

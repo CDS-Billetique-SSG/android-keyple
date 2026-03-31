@@ -318,7 +318,7 @@ internal class UsbLowLevel(private val scardReaderList: SCardReaderList, private
         override fun onReceive(context: Context, intent: Intent) {
 
             if (UsbManager.ACTION_USB_DEVICE_DETACHED == intent.action) {
-                val device: UsbDevice? = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+                val device: UsbDevice? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     intent.getParcelableExtra(UsbManager.EXTRA_DEVICE, UsbDevice::class.java)
                 }
                 else {
